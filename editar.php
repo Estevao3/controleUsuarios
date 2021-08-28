@@ -1,18 +1,22 @@
 <?php
 require 'config.php';
 
+$id = 0;
+
 if(isset($_GET['id']) && empty($_GET['id']) == false){
 	$id = addslashes($_GET['id']);
 }
 
 if(isset($_POST['nome']) && empty($_POST['nome']) == false){
-	$nome = addslashes($_POST['nome']);
-	$email = addslashes($_POST['email']);
+	if(isset($_POST['email']) && empty($_POST['email']) == false){
+		$nome = addslashes($_POST['nome']);
+		$email = addslashes($_POST['email']);
 
-	$sql = "UPDATE usuarios SET nome = '$nome', email = '$email' WHERE id = '$id' ";
-	$pdo->query($sql);
+		$sql = "UPDATE usuarios SET nome = '$nome', email = '$email' WHERE id = '$id' ";
+		$pdo->query($sql);
 
-	header("Location: index.php");
+		header("Location: index.php");
+	}
 }
 
 $sql = "SELECT * FROM usuarios WHERE id = '$id' ";
@@ -27,8 +31,9 @@ else{
 ?>
 <form method="POST">
 	Nome:<br>
-	<input type="text" name="nome" value="<?php echo $dado['nome']; ?>"><br><br>
+	<input type="text" name="nome"  value="<?php echo $dado['nome']; ?>" required=""><br><br>
 	E-mail:<br>
-	<input type="text" name="email" value="<?php echo $dado['email']; ?> "><br><br>
-	Senha:<br>
+	<input type="text" name="email" value="<?php echo $dado['email']; ?> " required="" ><br><br>
+	
+	<input type="submit" value="Atualizar">
 </form>
