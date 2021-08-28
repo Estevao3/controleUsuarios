@@ -8,9 +8,16 @@ if(isset($_POST['nome']) && empty($_POST['nome']) == false){
 			$email = addslashes($_POST['email']);
 			$senha = md5(addslashes($_POST['senha']));
 
-			$sql = "INSERT INTO usuarios SET nome = '$nome', email = '$email', senha = '$senha'";
-			$pdo->query($sql);
-			header("Location: index.php");
+			$sql = "SELECT * FROM usuarios WHERE email = '$email'";
+			$sql = $pdo->query($sql);
+
+			if($sql->rowCount() == 0){
+				$sql = "INSERT INTO usuarios SET nome = '$nome', email = '$email', senha = '$senha'";
+				$pdo->query($sql);
+				header("Location: index.php");
+			} else{
+				echo 'email já existente';
+			}
 		}
 	}
 }
